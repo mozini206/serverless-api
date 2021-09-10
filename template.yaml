@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+Resources:
+  restaurantFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: restaurant-SAM/
+      Handler: index.lambda_handler
+      Runtime: nodejs14.x
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /restaurant , /restaurants
+            Method: get, POST
+
+Outputs:
+  restaurantApi:
+    Description: "API Gateway endpoint URL for Prod stage for Restaurant function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  restaurantFunction:
+    Description: "restaurant Function ARN"
+    Value: !GetAtt restaurantFunction.Arn
+  restaurantFunctionIamRole:
+    Description: "Implicit IAM Role created for Restaurant function"
+    Value: !GetAtt RestaurantRole.Arn
